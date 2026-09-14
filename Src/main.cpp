@@ -1,4 +1,5 @@
 #include "Pokedex.hpp"
+#include "PokemonParty.hpp"
 #include <iostream>
 //#include "Pokemon.hpp"
 
@@ -62,10 +63,18 @@ return 0;
 */
 
 
-// Test Pokedex
-
 int main() {
+    // Test Pokedex
     Pokedex* pokedex = Pokedex::getInstance("../Res/pokedex.csv");
     pokedex->displayListPokemon(5);
+    
+    // Test PokemonParty
+    PokemonParty party=PokemonParty();
+    party.addPokemon(pokedex->getByIndex(1));
+    party.addPokemon(pokedex->getByName("Ivysaur"));
+    party.displayListPokemon(2);
+    party.removePokemon(pokedex->getByIndex(2));
+    party.displayListPokemon(1);
+
     return 0;
 }

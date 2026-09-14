@@ -22,14 +22,13 @@ set(SOURCES
     Src/main.cpp
     Src/Pokemon.cpp
     Src/SetOfPokemon.cpp
-    Src/Pokeball.cpp
     Src/Pokedex.cpp
     Src/PokemonParty.cpp
+    Src/Pokemon_Attack.cpp
 )
 
 # --- Executable ---
-#add_executable(${PROJECT_NAME} ${SOURCES})
-add_executable(${PROJECT_NAME} Src/main.cpp Src/Pokemon.cpp Src/SetOfPokemon.cpp Src/Pokedex.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::Graphics

@@ -1,5 +1,6 @@
 #include "Pokemon_Attack.hpp"
 #include <iostream>
+#include <stdexcept>
 
 Pokemon_Attack::Pokemon_Attack() {}
 
@@ -18,4 +19,5 @@ Pokemon Pokemon_Attack::getByName(string name) {
             return pokemon;
         }
     }
+    throw std::invalid_argument("Pokemon not found");
 }

@@ -15,3 +15,13 @@ void SetOfPokemon::addPokemon(const Pokemon& pokemon) {
 }
 
 
+void SetOfPokemon::removePokemon(const Pokemon& pokemon) {
+    for (auto it=arrayOfPokemon.begin(); it!=arrayOfPokemon.end();) {
+        if (it->getName()==pokemon.getName()) {
+            it=arrayOfPokemon.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+    
