@@ -8,6 +8,10 @@ PokemonParty::PokemonParty():SetOfPokemon() {
 	arrayOfPokemon = std::vector<Pokemon>();
 }
 
+PokemonParty::~PokemonParty() {
+	arrayOfPokemon.clear();
+}
+
 Pokemon PokemonParty::getByIndex(int index) {
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getId() == index) {
@@ -24,4 +28,18 @@ Pokemon PokemonParty::getByName(string name) {
         }
     }
     throw std::invalid_argument("Pokemon not found");
+}
+
+void PokemonParty::addPokemonToParty(const Pokemon& pokemon) {
+    arrayOfPokemon.push_back(pokemon);
+}
+
+void PokemonParty::removePokemonFromParty(const Pokemon& pokemon) {
+    for (auto it=arrayOfPokemon.begin(); it!=arrayOfPokemon.end();) {
+        if (it->getName()==pokemon.getName()) {
+            it=arrayOfPokemon.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }

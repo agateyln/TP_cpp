@@ -13,6 +13,4 @@ class SetOfPokemon {
         virtual Pokemon getByIndex(int index) = 0;
         virtual Pokemon getByName(string name) = 0;
         void displayListPokemon(int number);
-        void addPokemon(const Pokemon& pokemon);
-        void removePokemon(const Pokemon& pokemon);
 };

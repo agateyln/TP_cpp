@@ -1,8 +1,8 @@
 #include "Pokedex.hpp"
-#include "Pokemon.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 Pokedex* Pokedex::instance = nullptr;
 
@@ -40,11 +40,11 @@ Pokedex::Pokedex(string fileName):SetOfPokemon() {
         double defenseValue = std::stod(lineData.at(7));
         int generation = std::stoi(lineData.at(11));
 
-        /*
-        arrayOfPokemon.push_back(new Pokemon(lineData.at(1),id,hitPoint,attackValue,
-                                             defenseValue,generation));
-        */
-       addPokemon(Pokemon(id, lineData.at(1), hitPoint, attackValue, defenseValue, generation));
+        
+        arrayOfPokemon.push_back(Pokemon(id, lineData.at(1), hitPoint, attackValue,
+                         defenseValue, generation));
+        
+       //addPokemon(Pokemon(id, lineData.at(1), hitPoint, attackValue, defenseValue, generation));
     }
 }
 

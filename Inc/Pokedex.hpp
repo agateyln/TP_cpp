@@ -10,4 +10,5 @@ class Pokedex : public SetOfPokemon {
         static Pokedex *getInstance(string fileName);
         Pokemon getByIndex(int index) override;
         Pokemon getByName(string name) override;
+        
 };

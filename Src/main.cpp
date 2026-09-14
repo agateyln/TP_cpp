@@ -1,5 +1,6 @@
 #include "Pokedex.hpp"
 #include "PokemonParty.hpp"
+#include "Pokemon_Attack.hpp"
 #include <iostream>
 //#include "Pokemon.hpp"
 
@@ -42,7 +43,7 @@ int main() {
     */
 
 
-/*
+/*/*
 #include <SFML/Graphics.hpp>
 
 int main() {
@@ -62,19 +63,43 @@ return 0;
 }
 */
 
-
 int main() {
     // Test Pokedex
     Pokedex* pokedex = Pokedex::getInstance("../Res/pokedex.csv");
     pokedex->displayListPokemon(5);
+  
     
-    // Test PokemonParty
-    PokemonParty party=PokemonParty();
-    party.addPokemon(pokedex->getByIndex(1));
-    party.addPokemon(pokedex->getByName("Ivysaur"));
+    PokemonParty party;
+    party.addPokemonToParty(pokedex->getByIndex(1));
+    party.addPokemonToParty(pokedex->getByName("Ivysaur"));
+    std::cout<<"Party List"<<std::endl;
     party.displayListPokemon(2);
-    party.removePokemon(pokedex->getByIndex(2));
+    party.removePokemonFromParty(pokedex->getByIndex(2));
+    std::cout<<"Party list after removing a pokemon"<<std::endl;
     party.displayListPokemon(1);
+    party.addPokemonToParty(pokedex->getByIndex(2));
+    party.addPokemonToParty(pokedex->getByIndex(3));
+    party.addPokemonToParty(pokedex->getByIndex(4));
+    party.addPokemonToParty(pokedex->getByIndex(5));
+    std::cout<<"Party list after adding more pokemons"<<std::endl;
+    party.displayListPokemon(5);
+    std::cout<<"Pokedex list after adding pokemons to party"<<std::endl;
+    pokedex->displayListPokemon(5);
+
+    Pokemon_Attack attackList;
+    attackList.addPokemonToAttackFromParty(party, party.getByIndex(1));
+    attackList.addPokemonToAttackFromParty(party, party.getByIndex(2));
+    attackList.addPokemonToAttackFromParty(party, party.getByIndex(3));
+    std::cout<<"Attack List"<<std::endl;
+    attackList.displayListPokemon(3);
+    std::cout<<"Party list after adding pokemons to attack list"<<std::endl;
+    party.displayListPokemon(2);
+    attackList.removePokemonFromAttackToParty(party, attackList.getByIndex(1));
+    std::cout<<"Attack list after returning a pokemon to party list"<<std::endl;
+    attackList.displayListPokemon(2);
+    std::cout<<"Party list after returning a pokemon from attack list"<<std::endl;
+    party.displayListPokemon(3);
+
 
     return 0;
 }
