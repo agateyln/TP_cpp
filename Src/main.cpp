@@ -2,48 +2,66 @@
 #include "PokemonParty.hpp"
 #include "Pokemon_Attack.hpp"
 #include <iostream>
-//#include "Pokemon.hpp"
 
-/*
+
 int main() {
-    std::cout<<"Hello world"<<std::endl;
-}
-*/
 
-/*
-int main() {
-    Pokemon pokemon1(1,"num1",100,60,55,1);
-    Pokemon pokemon2(2,"num2",50,50,30,1);
-    Pokemon pokemon3(3,"num3",80,50,30,1);
+    // POKEDEC
+    std::cout<<"5 premiers Pokemons du Pokedex"<<std::endl;
+    Pokedex* pokedex = Pokedex::getInstance("../Res/pokedex.csv");
+    pokedex->displayListPokemon(5);
+    
+    // POKEMON PARTY
+    std::cout<<"\nPokemon Party"<<std::endl;
+    PokemonParty party;
+    party.addPokemonToParty(pokedex->getByName("Bulbasaur"));
+    party.addPokemonToParty(pokedex->getByName("Charizard"));
+    party.addPokemonToParty(pokedex->getByName("Squirtle"));
+    party.displayListPokemon(3);
 
-    pokemon1.displayInfo();
-    pokemon2.displayInfo();
-    pokemon3.displayInfo();
+    // POKEMON ATTACK
+    std::cout<<"\nPokemon Attack"<<std::endl;
+    Pokemon_Attack attackList;
+    attackList.addPokemonToAttackFromParty(party, party.getByName("Bulbasaur"));
+    attackList.addPokemonToAttackFromParty(party, party.getByName("Charizard"));
+    attackList.displayListPokemon(2);
 
-    std::cout<<"Number of Pokemon: "<<Pokemon::getCount()<<std::endl;
+    std::cout << "\nParty after selecting the attack team:\n";
+    party.displayListPokemon(1);
 
-    // Test the copy constructor
-    Pokemon pokemon4(pokemon2);
-    pokemon2.displayInfo();
-    pokemon4.displayInfo();
+    // COMBAT
+    std::cout<<"\nCombat!"<<std::endl;
+    Pokemon attacker = attackList.getByName("Charizard");
+    Pokemon defender = attackList.getByName("Bulbasaur");
 
-    // Test the attack method
-    pokemon1.attackPokemon(pokemon2);
-    pokemon2.displayInfo();
-    pokemon1.attackPokemon(pokemon2);
-    pokemon2.displayInfo();
+    std::cout << attacker.getName() << " attacks " << defender.getName() << ".\n";
+    while (attacker.attackPokemon(defender)) {
+        std::cout<<attacker.getName()<<" deals "<<attacker.getAttack()-defender.getDefense()<<" damage to "<<defender.getName()<<std::endl;
+        defender.damagePokemon(defender, attacker.getAttack() - defender.getDefense());
+        std::cout<<defender.getName()<<" has "<<defender.getHitPoint()<<" HP left."<<std::endl;
+    }
+    if (defender.getHitPoint()<=0) {
+        std::cout<<defender.getName()<<" is sleeping."<<std::endl;
+    }
 
-    pokemon3.attackPokemon(pokemon1);
-    pokemon1.displayInfo();
-
-    // Test 
+    // RETURN POKEMONS TO PARTY
+    std::cout<<"\nCombat ended. Pokemons return to their party."<<std::endl;
+    attackList.removePokemonFromAttackToParty(party,attacker);
+    attackList.removePokemonFromAttackToParty(party,defender);
+    std::cout<<"\nParty after combat"<<std::endl;
+    party.displayListPokemon(3);
     
     return 0;
 }
-    */
 
 
-/*/*
+
+
+
+
+
+// Test code for SFML
+/*
 #include <SFML/Graphics.hpp>
 
 int main() {
@@ -62,44 +80,3 @@ int main() {
 return 0;
 }
 */
-
-int main() {
-    // Test Pokedex
-    Pokedex* pokedex = Pokedex::getInstance("../Res/pokedex.csv");
-    pokedex->displayListPokemon(5);
-  
-    
-    PokemonParty party;
-    party.addPokemonToParty(pokedex->getByIndex(1));
-    party.addPokemonToParty(pokedex->getByName("Ivysaur"));
-    std::cout<<"Party List"<<std::endl;
-    party.displayListPokemon(2);
-    party.removePokemonFromParty(pokedex->getByIndex(2));
-    std::cout<<"Party list after removing a pokemon"<<std::endl;
-    party.displayListPokemon(1);
-    party.addPokemonToParty(pokedex->getByIndex(2));
-    party.addPokemonToParty(pokedex->getByIndex(3));
-    party.addPokemonToParty(pokedex->getByIndex(4));
-    party.addPokemonToParty(pokedex->getByIndex(5));
-    std::cout<<"Party list after adding more pokemons"<<std::endl;
-    party.displayListPokemon(5);
-    std::cout<<"Pokedex list after adding pokemons to party"<<std::endl;
-    pokedex->displayListPokemon(5);
-
-    Pokemon_Attack attackList;
-    attackList.addPokemonToAttackFromParty(party, party.getByIndex(1));
-    attackList.addPokemonToAttackFromParty(party, party.getByIndex(2));
-    attackList.addPokemonToAttackFromParty(party, party.getByIndex(3));
-    std::cout<<"Attack List"<<std::endl;
-    attackList.displayListPokemon(3);
-    std::cout<<"Party list after adding pokemons to attack list"<<std::endl;
-    party.displayListPokemon(2);
-    attackList.removePokemonFromAttackToParty(party, attackList.getByIndex(1));
-    std::cout<<"Attack list after returning a pokemon to party list"<<std::endl;
-    attackList.displayListPokemon(2);
-    std::cout<<"Party list after returning a pokemon from attack list"<<std::endl;
-    party.displayListPokemon(3);
-
-
-    return 0;
-}

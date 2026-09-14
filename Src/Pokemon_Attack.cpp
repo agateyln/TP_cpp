@@ -26,7 +26,8 @@ Pokemon Pokemon_Attack::getByName(string name) {
     throw std::invalid_argument("Pokemon not found");
 }
 
-void Pokemon_Attack::addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon) {
+// Add a Pokemon from the party to the attack list and remove it from the party
+void Pokemon_Attack::addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon) { 
     if (arrayOfPokemon.size() >= MAX_ATTACK_POKEMON) {
         throw std::runtime_error("Attack list is full.");
     }
@@ -34,6 +35,7 @@ void Pokemon_Attack::addPokemonToAttackFromParty(PokemonParty& party, const Poke
     party.removePokemonFromParty(pokemon); 
 }
 
+// Remove a Pokemon from the attack list and add it back to the party
 void Pokemon_Attack::removePokemonFromAttackToParty(PokemonParty& party, const Pokemon& pokemon) {
     for (auto it=arrayOfPokemon.begin(); it!=arrayOfPokemon.end();) {
         if (it->getName()==pokemon.getName()) {

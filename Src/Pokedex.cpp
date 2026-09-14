@@ -15,7 +15,7 @@ Pokedex* Pokedex::getInstance(string fileName) {
 
 Pokedex::Pokedex(string fileName):SetOfPokemon() { 
 
-    std::cout << "*** Constructeur du Pokedex ***" << std::endl;
+    //std::cout << "*** Constructeur du Pokedex ***" << std::endl;
 
     std::ifstream file(fileName);
     if(!file.is_open()){
@@ -48,7 +48,7 @@ Pokedex::Pokedex(string fileName):SetOfPokemon() {
     }
 }
 
-Pokemon Pokedex::getByIndex(int index) {
+Pokemon Pokedex::getByIndex(int index) { // Returns a copy of the Pokemon with the given index
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getId() == index) {
             return Pokemon(pokemon);
@@ -57,7 +57,7 @@ Pokemon Pokedex::getByIndex(int index) {
     throw std::invalid_argument("Pokemon not found");
 }
 
-Pokemon Pokedex::getByName(string name) {
+Pokemon Pokedex::getByName(string name) { // Returns a copy of the Pokemon with the given name
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getName() == name) {
             return Pokemon(pokemon);  

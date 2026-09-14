@@ -4,7 +4,7 @@
 #include <vector>
 
 PokemonParty::PokemonParty():SetOfPokemon() { 
-	std::cout<<"*** Constructeur du PokemonParty ***"<<std::endl;
+	//std::cout<<"*** Constructeur du PokemonParty ***"<<std::endl;
 	arrayOfPokemon = std::vector<Pokemon>();
 }
 
@@ -33,6 +33,7 @@ Pokemon PokemonParty::getByName(string name) {
 void PokemonParty::addPokemonToParty(const Pokemon& pokemon) {
     arrayOfPokemon.push_back(pokemon);
 }
+
 
 void PokemonParty::removePokemonFromParty(const Pokemon& pokemon) {
     for (auto it=arrayOfPokemon.begin(); it!=arrayOfPokemon.end();) {

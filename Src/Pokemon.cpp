@@ -61,21 +61,22 @@ int Pokemon::getGeneration() {
 }
 
 bool Pokemon::attackPokemon(Pokemon &target) {
-    if (attack > target.defense) {
-        target.damagePokemon(target,(attack-target.defense));
-        return true;
-    }
-    else {
+    if (target.hitPoint <=0) {
         return false;
     }
-    if (target.hitPoint <= 0) {
-        target.hitPoint=0;
+    else if (attack > target.defense) {
+        return true;
+    } 
+    else {
         return false;
     }
 }
 
 void Pokemon::damagePokemon(Pokemon, double damage) {
     hitPoint -= damage;
+    if (hitPoint < 0) {
+        hitPoint = 0;
+    }
 }
 
 int Pokemon::getCount() {
