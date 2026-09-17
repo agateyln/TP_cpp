@@ -12,7 +12,12 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-add_compile_options(-Wall -Wextra -Wpedantic)
+if(MSVC)
+    add_compile_options(/W4)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(SFML 3 COMPONENTS Graphics Audio Window System REQUIRED)
