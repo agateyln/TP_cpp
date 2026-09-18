@@ -6,7 +6,8 @@
 
 Pokedex* Pokedex::instance = nullptr;
 
-Pokedex* Pokedex::getInstance(string fileName) {
+Pokedex* Pokedex::getInstance() {
+    static std::string fileName="../Res/pokedex.csv";
     if (instance == nullptr) {
         instance = new Pokedex(fileName);
     }
@@ -48,7 +49,7 @@ Pokedex::Pokedex(string fileName):SetOfPokemon() {
     }
 }
 
-Pokemon Pokedex::getByIndex(int index) { // Returns a copy of the Pokemon with the given index
+Pokemon Pokedex::getById(int index) { // Returns a copy of the Pokemon with the given index
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getId() == index) {
             return Pokemon(pokemon);

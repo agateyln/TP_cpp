@@ -1,6 +1,6 @@
 #include "Pokedex.hpp"
 #include "PokemonParty.hpp"
-#include "Pokemon_Attack.hpp"
+#include "PokemonAttack.hpp"
 #include <iostream>
 
 
@@ -8,7 +8,7 @@ int main() {
 
     // POKEDEC
     std::cout<<"5 premiers Pokemons du Pokedex"<<std::endl;
-    Pokedex* pokedex = Pokedex::getInstance("../Res/pokedex.csv");
+    Pokedex* pokedex = Pokedex::getInstance();
     pokedex->displayListPokemon(5);
     
     // POKEMON PARTY
@@ -21,7 +21,7 @@ int main() {
 
     // POKEMON ATTACK
     std::cout<<"\nPokemon Attack"<<std::endl;
-    Pokemon_Attack attackList;
+    PokemonAttack attackList;
     attackList.addPokemonToAttackFromParty(party, party.getByName("Bulbasaur"));
     attackList.addPokemonToAttackFromParty(party, party.getByName("Charizard"));
     attackList.displayListPokemon(2);
@@ -37,10 +37,10 @@ int main() {
     std::cout << attacker.getName() << " attacks " << defender.getName() << ".\n";
     while (attacker.attackPokemon(defender)) {
         std::cout<<attacker.getName()<<" deals "<<attacker.getAttack()-defender.getDefense()<<" damage to "<<defender.getName()<<std::endl;
-        defender.damagePokemon(defender, attacker.getAttack() - defender.getDefense());
+        defender.damagePokemon(attacker.getAttack() - defender.getDefense());
         std::cout<<defender.getName()<<" has "<<defender.getHitPoint()<<" HP left."<<std::endl;
     }
-    if (defender.getHitPoint()<=0) {
+    if (defender.isSleeping()) {
         std::cout<<defender.getName()<<" is sleeping."<<std::endl;
     }
 

@@ -29,7 +29,7 @@ set(SOURCES
     Src/SetOfPokemon.cpp
     Src/Pokedex.cpp
     Src/PokemonParty.cpp
-    Src/Pokemon_Attack.cpp
+    Src/PokemonAttack.cpp
 )
 
 # --- Executable ---

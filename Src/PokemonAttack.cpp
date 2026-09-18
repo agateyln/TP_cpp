@@ -1,14 +1,14 @@
-#include "Pokemon_Attack.hpp"
+#include "PokemonAttack.hpp"
 #include <iostream>
 #include <stdexcept>
 
-Pokemon_Attack::Pokemon_Attack() {
+PokemonAttack::PokemonAttack() {
 }
 
-Pokemon_Attack::~Pokemon_Attack() {
+PokemonAttack::~PokemonAttack() {
 }
 
-Pokemon Pokemon_Attack::getByIndex(int index) {
+Pokemon PokemonAttack::getById(int index) {
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getId() == index) {
             return Pokemon(pokemon);
@@ -17,7 +17,7 @@ Pokemon Pokemon_Attack::getByIndex(int index) {
     throw std::invalid_argument("Pokemon not found");
 }
 
-Pokemon Pokemon_Attack::getByName(string name) {
+Pokemon PokemonAttack::getByName(string name) {
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getName() == name) {
             return Pokemon(pokemon);  
@@ -27,7 +27,7 @@ Pokemon Pokemon_Attack::getByName(string name) {
 }
 
 // Add a Pokemon from the party to the attack list and remove it from the party
-void Pokemon_Attack::addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon) { 
+void PokemonAttack::addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon) { 
     if (arrayOfPokemon.size() >= MAX_ATTACK_POKEMON) {
         throw std::runtime_error("Attack list is full.");
     }
@@ -36,7 +36,7 @@ void Pokemon_Attack::addPokemonToAttackFromParty(PokemonParty& party, const Poke
 }
 
 // Remove a Pokemon from the attack list and add it back to the party
-void Pokemon_Attack::removePokemonFromAttackToParty(PokemonParty& party, const Pokemon& pokemon) {
+void PokemonAttack::removePokemonFromAttackToParty(PokemonParty& party, const Pokemon& pokemon) {
     for (auto it=arrayOfPokemon.begin(); it!=arrayOfPokemon.end();) {
         if (it->getName()==pokemon.getName()) {
             it=arrayOfPokemon.erase(it);

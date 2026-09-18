@@ -29,6 +29,7 @@ class Pokemon {
         static int getCount();
 
         bool attackPokemon(Pokemon &target);
-        void damagePokemon(Pokemon, double damage);
+        void damagePokemon(double damage);
+        bool isSleeping();
 
 };

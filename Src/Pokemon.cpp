@@ -72,7 +72,7 @@ bool Pokemon::attackPokemon(Pokemon &target) {
     }
 }
 
-void Pokemon::damagePokemon(Pokemon, double damage) {
+void Pokemon::damagePokemon(double damage) {
     hitPoint -= damage;
     if (hitPoint < 0) {
         hitPoint = 0;
@@ -83,3 +83,6 @@ int Pokemon::getCount() {
     return countPokemon;
 }
 
+bool Pokemon::isSleeping(){
+    return hitPoint <= 0;
+}

@@ -12,7 +12,7 @@ PokemonParty::~PokemonParty() {
 	arrayOfPokemon.clear();
 }
 
-Pokemon PokemonParty::getByIndex(int index) {
+Pokemon PokemonParty::getById(int index) {
     for (Pokemon& pokemon : arrayOfPokemon) {
         if (pokemon.getId() == index) {
             return Pokemon(pokemon);
