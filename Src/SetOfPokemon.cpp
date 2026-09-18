@@ -2,7 +2,7 @@
 #include <iostream>
 
 void SetOfPokemon::displayListPokemon(int number) {
-    if (number > arrayOfPokemon.size()) {
+    if (number > static_cast<int>(arrayOfPokemon.size())) {  
         number=arrayOfPokemon.size();
     }
     for (int i=0;i<number;i++) {
