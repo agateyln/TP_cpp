@@ -4,13 +4,8 @@
 #include <sstream>
 #include <stdexcept>
 
-Pokedex* Pokedex::instance = nullptr;
-
-Pokedex* Pokedex::getInstance() {
-    static std::string fileName="../Res/pokedex.csv";
-    if (instance == nullptr) {
-        instance = new Pokedex(fileName);
-    }
+Pokedex& Pokedex::getInstance() {
+    static Pokedex instance("../Res/pokedex.csv");
     return instance;
 }
 

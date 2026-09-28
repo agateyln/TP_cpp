@@ -1,11 +1,37 @@
-#include "Pokedex.hpp"
-#include "PokemonParty.hpp"
-#include "PokemonAttack.hpp"
+#include "Game.hpp"
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 
 int main() {
+    
+    /*
+    // SFML
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "Pokemon pour les nuls");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
+    // display a message  in the window
+    const sf::Font font("../Res/font.otf");
+    sf::Text text(font, "Pokemon game", 50);
+
+    const sf::Texture texture("../Res/pokemon/1.01.png");
+    sf::Sprite sprite(texture);
+    
+    while (window.isOpen()) {
+        while (const std::optional<sf::Event> event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>())
+                window.close();
+        }
+        window.clear();
+        window.draw(shape);
+        window.draw(text);
+        window.draw(sprite);
+        window.display();
+    }
+    */
+
+    /*
     // POKEDEC
     std::cout<<"5 premiers Pokemons du Pokedex"<<std::endl;
     Pokedex* pokedex = Pokedex::getInstance();
@@ -29,7 +55,7 @@ int main() {
     std::cout << "\nParty after selecting the attack team:\n";
     party.displayListPokemon(1);
 
-    // COMBAT
+    // COMBAT'
     std::cout<<"\nCombat!"<<std::endl;
     Pokemon attacker = attackList.getByName("Charizard");
     Pokemon defender = attackList.getByName("Bulbasaur");
@@ -50,33 +76,10 @@ int main() {
     attackList.removePokemonFromAttackToParty(party,defender);
     std::cout<<"\nParty after combat"<<std::endl;
     party.displayListPokemon(3);
-    
+    */
+
+    // Game loop
+    Game game;
+    game.run();
     return 0;
 }
-
-
-
-
-
-
-
-// Test code for SFML
-/*
-#include <SFML/Graphics.hpp>
-
-int main() {
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "Hello SFML");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-    while (window.isOpen()) {
-        while (const std::optional<sf::Event> event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-return 0;
-}
-*/

@@ -12,5 +12,8 @@ class SetOfPokemon {
         virtual ~SetOfPokemon() {};
         virtual Pokemon getById(int index) = 0;
         virtual Pokemon getByName(string name) = 0;
+        Pokemon getByIndex(std::size_t index) const;
+        std::size_t size() const;
+        bool empty() const;
         void displayListPokemon(int number);
 };

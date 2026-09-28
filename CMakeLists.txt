@@ -25,11 +25,19 @@ find_package(SFML 3 COMPONENTS Graphics Audio Window System REQUIRED)
 # --- Fichiers sources ---
 set(SOURCES
     Src/main.cpp
+    Src/Game.cpp
+    Src/GameEngine.cpp
     Src/Pokemon.cpp
     Src/SetOfPokemon.cpp
     Src/Pokedex.cpp
     Src/PokemonParty.cpp
     Src/PokemonAttack.cpp
+    Src/States/WelcomeState.cpp
+    Src/States/ExplorationState.cpp
+    Src/States/EncounterState.cpp
+    Src/States/CombatState.cpp
+    Src/States/GameOverState.cpp
+    Src/States/CaptureState.cpp
 )
 
 # --- Executable ---

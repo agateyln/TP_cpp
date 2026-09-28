@@ -64,12 +64,10 @@ bool Pokemon::attackPokemon(Pokemon &target) {
     if (target.hitPoint <=0) {
         return false;
     }
-    else if (attack > target.defense) {
+    
         return true;
-    } 
-    else {
-        return false;
-    }
+    
+    
 }
 
 void Pokemon::damagePokemon(double damage) {
