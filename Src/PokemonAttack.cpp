@@ -46,3 +46,13 @@ void PokemonAttack::removePokemonFromAttackToParty(PokemonParty& party, const Po
         }
     }
 }
+
+void PokemonAttack::updatePokemon(const Pokemon& pokemon) { // this method updates the Pokemon in the attack list with the modified values of the Pokemon who is fighting in the battle
+    for (Pokemon& storedPokemon : arrayOfPokemon) {
+        if (storedPokemon.getId() == pokemon.getId()) {
+            storedPokemon = pokemon;
+            return;
+        }
+    }
+    throw std::invalid_argument("Pokemon not found in attack list");
+}

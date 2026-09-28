@@ -13,4 +13,5 @@ class PokemonAttack : public SetOfPokemon {
         Pokemon getByName(string name) override;
         void addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon);
         void removePokemonFromAttackToParty(PokemonParty& party, const Pokemon& pokemon);
+        void updatePokemon(const Pokemon& pokemon);
 };

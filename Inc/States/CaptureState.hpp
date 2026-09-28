@@ -14,6 +14,7 @@ class CaptureState : public StateInterface {
         Game& game;
         Pokemon wildPokemon;
         std::optional<Pokemon> attackerPokemon;
+        bool leavingState = false;
         sf::Font font;
         sf::Text title;
         sf::Texture attackerTexture;

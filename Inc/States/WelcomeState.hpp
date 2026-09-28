@@ -14,8 +14,10 @@ private:
     sf::Text title;
     sf::Text instruction;
     sf::Text message;
-    sf::Texture texture;
-    sf::Sprite sprite;
+    sf::Texture texture1;
+    sf::Texture texture2;
+    sf::Sprite starter1;
+    sf::Sprite starter2;
 
 public:
     WelcomeState(GameEngine& engine, Game& game);

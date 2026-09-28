@@ -10,19 +10,26 @@ WelcomeState::WelcomeState(GameEngine& engine, Game& game):
     font("../Res/font.otf"),
     title(font, "Pokemon pour les nuls", 40),
     instruction(font, "Appuyez sur Entree pour continuer", 24),
-    message(font,"On vous donne un Pokemon pour commencer",24),
-    texture("../Res/pokemon/2.png"),
-    sprite(texture) {
+    message(font,"On vous donne deux Pokemon pour commencer",24),
+    texture1("../Res/pokemon/2.png"),
+    texture2("../Res/pokemon/40.png"),
+    starter1(texture1),
+    starter2(texture2) {
     title.setPosition({110.f, 90.f});
     instruction.setPosition({130.f, 500.f});
-    sprite.setPosition({350.f, 180.f});
+    starter1.setPosition({100.f, 180.f});
+    starter2.setPosition({350.f, 180.f});
 }
 
 void WelcomeState::enter() {
     engine.getWindow().setTitle("Pokemon - Accueil | Appuyez sur Entree");
-    const Pokemon starter = game.getPokedex().getById(2);
+    // Add the two starter Pokemon to the player's party
+    Pokemon starter = game.getPokedex().getById(2);
+    Pokemon starter2 = game.getPokedex().getById(40);
     game.getParty().addPokemonToParty(starter);
+    game.getParty().addPokemonToParty(starter2);
     game.getAttackList().addPokemonToAttackFromParty(game.getParty(), starter);
+    game.getAttackList().addPokemonToAttackFromParty(game.getParty(), starter2);
 }
 
 void WelcomeState::exit() {
@@ -44,5 +51,6 @@ void WelcomeState::update() {
     window.draw(title);
     window.draw(instruction);
     window.draw(message);
-    window.draw(sprite);
+    window.draw(starter1);
+    window.draw(starter2);
 }
