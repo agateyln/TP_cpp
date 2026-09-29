@@ -1,5 +1,5 @@
 #include "States/GameOverState.hpp"
-#include "GameEngine.hpp"
+#include "Game/GameEngine.hpp"
 
 GameOverState::GameOverState(GameEngine& engine)
     : engine(engine) {

@@ -1,4 +1,4 @@
-#include "PokemonAttack.hpp"
+#include "Pokemon/PokemonAttack.hpp"
 #include <iostream>
 #include <stdexcept>
 

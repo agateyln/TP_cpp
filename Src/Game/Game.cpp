@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Game.hpp"
-#include "GameEngine.hpp"
+#include "Game/Game.hpp"
+#include "Game/GameEngine.hpp"
 #include "States/WelcomeState.hpp"
 #include "States/ExplorationState.hpp"
 

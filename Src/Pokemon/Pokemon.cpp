@@ -1,4 +1,4 @@
-#include "Pokemon.hpp"
+#include "Pokemon/Pokemon.hpp"
 #include <iostream>
 
 int Pokemon::countPokemon=0;

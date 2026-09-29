@@ -1,4 +1,4 @@
-#include "SetOfPokemon.hpp"
+#include "Pokemon/SetOfPokemon.hpp"
 #include <iostream>
 
 void SetOfPokemon::displayListPokemon(int number) {

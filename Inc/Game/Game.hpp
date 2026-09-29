@@ -1,6 +1,6 @@
-#include "Pokedex.hpp"
-#include "PokemonParty.hpp"
-#include "PokemonAttack.hpp"
+#include "Pokemon/Pokedex.hpp"
+#include "Pokemon/PokemonParty.hpp"
+#include "Pokemon/PokemonAttack.hpp"
 
 class Game { 
     private:

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "StateInterface.hpp"
+#include "Game/Button.hpp"
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class GameEngine;
 class Game;
@@ -18,6 +20,7 @@ private:
     sf::Texture texture2;
     sf::Sprite starter1;
     sf::Sprite starter2;
+    std::unique_ptr<Button> button;
 
 public:
     WelcomeState(GameEngine& engine, Game& game);

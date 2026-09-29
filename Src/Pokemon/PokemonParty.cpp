@@ -1,5 +1,5 @@
-#include "PokemonParty.hpp"
-#include "SetOfPokemon.hpp"
+#include "Pokemon/PokemonParty.hpp"
+#include "Pokemon/SetOfPokemon.hpp"
 #include <iostream>
 #include <vector>
 

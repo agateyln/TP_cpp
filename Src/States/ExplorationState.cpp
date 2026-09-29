@@ -1,6 +1,6 @@
 #include "States/ExplorationState.hpp"
-#include "GameEngine.hpp"
-#include "Game.hpp"
+#include "Game/GameEngine.hpp"
+#include "Game/Game.hpp"
 #include "States/CombatState.hpp"
 #include "States/EncounterState.hpp"
 #include <random>

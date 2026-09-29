@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StateInterface.hpp"
-#include "Pokemon.hpp"
+#include "Pokemon/Pokemon.hpp"
 #include <SFML/Graphics.hpp>
 #include <optional>
 
