@@ -5,7 +5,7 @@ Button::Button(const sf::Vector2f& position, const sf::Vector2f& size, const std
     callback(callback) {
         shape.setPosition(position);
         shape.setSize(size);
-        shape.setFillColor(sf::Color::Blue);
+        shape.setFillColor(sf::Color(74, 74, 158));
         this->text.setString(text);
         this->text.setCharacterSize(20);
         this->text.setFillColor(sf::Color::White);
@@ -22,6 +22,7 @@ void Button::draw(sf::RenderWindow& window) {
     window.draw(text);
 }
 
+
 void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
     if (const auto* mouseButton = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (mouseButton->button == sf::Mouse::Button::Left) {
@@ -31,12 +32,12 @@ void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
                 callback();
             }
         }
-    } else if (const auto* mouseMoved = event.getIf<sf::Event::MouseMoved>()) {
-        auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
-        if (shape.getGlobalBounds().contains(mousePos)) {
-            shape.setFillColor(sf::Color::Red);
-        } else {
-            shape.setFillColor(sf::Color::Blue);
-        }
     }
+    auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+    if (shape.getGlobalBounds().contains(mousePos)) {
+        shape.setFillColor(sf::Color(113, 113, 192));
+    } else {
+        shape.setFillColor(sf::Color(74, 74, 158));
+    }
+    
 }

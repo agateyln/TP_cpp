@@ -45,18 +45,18 @@ string Pokemon::getName() const {
     return name;
 }
 
-double Pokemon::getHitPoint() {
+double Pokemon::getHitPoint() const {
     return hitPoint;
 }
 
-double Pokemon::getAttack() {
+double Pokemon::getAttack() const {
     return attack;
 }
 
-double Pokemon::getDefense() {
+double Pokemon::getDefense() const {
     return defense;
 }
-int Pokemon::getGeneration() {
+int Pokemon::getGeneration() const {
     return generation;
 }
 

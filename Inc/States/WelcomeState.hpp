@@ -18,8 +18,10 @@ private:
     sf::Text message;
     sf::Texture texture1;
     sf::Texture texture2;
+    sf::Texture patachiotTexture;
     sf::Sprite starter1;
     sf::Sprite starter2;
+    sf::Sprite patachiot;
     std::unique_ptr<Button> button;
 
 public:

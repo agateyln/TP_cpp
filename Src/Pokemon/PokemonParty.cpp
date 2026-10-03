@@ -1,5 +1,6 @@
 #include "Pokemon/PokemonParty.hpp"
 #include "Pokemon/SetOfPokemon.hpp"
+#include "Pokemon/Pokedex.hpp"
 #include <iostream>
 #include <vector>
 
@@ -42,5 +43,14 @@ void PokemonParty::removePokemonFromParty(const Pokemon& pokemon) {
         } else {
             ++it;
         }
+    }
+}
+
+// for each Pokemon in the party, set its hitPoint to its original value (the one it had when it was created from the Pokedex)
+void PokemonParty::healAllPokemon() {
+    for (Pokemon& pokemon : arrayOfPokemon) {
+        // get the original hitPoint of the Pokemon from the Pokedex and set it to the current hitPoint of the Pokemon in the party
+        double originalHitPoint = Pokedex::getInstance().getByName(pokemon.getName()).getHitPoint();
+        pokemon.damagePokemon(-originalHitPoint + pokemon.getHitPoint());
     }
 }

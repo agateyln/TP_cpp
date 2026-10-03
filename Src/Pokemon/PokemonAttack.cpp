@@ -29,7 +29,7 @@ Pokemon PokemonAttack::getByName(string name) {
 // Add a Pokemon from the party to the attack list and remove it from the party
 void PokemonAttack::addPokemonToAttackFromParty(PokemonParty& party, const Pokemon& pokemon) { 
     if (arrayOfPokemon.size() >= MAX_ATTACK_POKEMON) {
-        throw std::runtime_error("Attack list is full.");
+        
     }
     arrayOfPokemon.push_back(pokemon);
     party.removePokemonFromParty(pokemon); 

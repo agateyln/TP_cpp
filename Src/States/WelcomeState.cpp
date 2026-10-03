@@ -14,24 +14,30 @@ WelcomeState::WelcomeState(GameEngine& engine, Game& game):
     message(font,"On vous donne deux Pokemon pour commencer",24),
     texture1("../Res/pokemon/2.png"),
     texture2("../Res/pokemon/40.png"),
+    patachiotTexture("../Res/pokemon/926.png"),
     starter1(texture1),
     starter2(texture2),
+    patachiot(patachiotTexture),
     button(nullptr) {
     title.setPosition({110.f, 90.f});
     instruction.setPosition({130.f, 500.f});
     starter1.setPosition({100.f, 180.f});
     starter2.setPosition({350.f, 180.f});
-}
+    patachiot.setPosition({225.f, 300.f});
+    }
 
 void WelcomeState::enter() {
     engine.getWindow().setTitle("Pokemon - Accueil | Appuyez sur Entree");
     // Add the two starter Pokemon to the player's party
     Pokemon starter = game.getPokedex().getById(2);
     Pokemon starter2 = game.getPokedex().getById(40);
+    Pokemon patachiot = game.getPokedex().getById(926);
     game.getParty().addPokemonToParty(starter);
     game.getParty().addPokemonToParty(starter2);
+    game.getParty().addPokemonToParty(patachiot);
     game.getAttackList().addPokemonToAttackFromParty(game.getParty(), starter);
     game.getAttackList().addPokemonToAttackFromParty(game.getParty(), starter2);
+    game.getAttackList().addPokemonToAttackFromParty(game.getParty(),patachiot);
 
     // create the button to start the game
     
@@ -60,6 +66,7 @@ void WelcomeState::update() {
     window.draw(message);
     window.draw(starter1);
     window.draw(starter2);
+    window.draw(patachiot);
     button->draw(window);
 
 }

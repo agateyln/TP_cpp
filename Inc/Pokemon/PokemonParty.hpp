@@ -10,4 +10,5 @@ class PokemonParty : public SetOfPokemon {
         Pokemon getByName(string name) override;
         void addPokemonToParty(const Pokemon& pokemon);
         void removePokemonFromParty(const Pokemon& pokemon);
+        void healAllPokemon();
 };

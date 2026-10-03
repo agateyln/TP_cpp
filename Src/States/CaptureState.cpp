@@ -55,9 +55,6 @@ void CaptureState::exit() {
 
 }
 
-// to replace the pressing of keys with clickable buttons, we will need to create a button class and handle mouse events in the update method.
-// to do so, we first need to create a button class that can be drawn on the window and can detect mouse clicks. Then, we will create buttons for "Attack", "Flee", and "Choose Attacker" and handle their click events in the update method.
-// the button class will have a rectangle shape, a text label, and a callback function that will be called when the button is clicked. 
 
 void CaptureState::update() {
     auto& window = engine.getWindow();

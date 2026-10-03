@@ -3,6 +3,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics.hpp> 
 #include "StateInterface.hpp"
+#include "Game/Button.hpp"
 
 class GameEngine;
 class Game;
@@ -15,6 +16,8 @@ private:
         sf::Font font;
         sf::Text title;
         sf::Text instruction;
+        std::unique_ptr<Button> CombatButton;
+        std::unique_ptr<Button> MenuButton;
 
 public:
     void enter() override;

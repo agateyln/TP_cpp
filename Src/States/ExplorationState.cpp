@@ -1,23 +1,32 @@
 #include "States/ExplorationState.hpp"
 #include "Game/GameEngine.hpp"
 #include "Game/Game.hpp"
+#include "Game/Button.hpp"
 #include "States/CombatState.hpp"
 #include "States/EncounterState.hpp"
-#include <random>
+#include "States/MenuState.hpp"
 
 ExplorationState::ExplorationState(GameEngine& engine, Game& game): 
     engine(engine),
     game(game),
     font("../Res/font.otf"),
     title(font,"Looking for Pokemon", 40),
-    instruction(font, "Press E for wild encounter, T for trainer encounter", 20) {
+    instruction(font, "Press E for wild encounter, T for trainer encounter", 20),
+    CombatButton(nullptr),
+    MenuButton(nullptr){
     title.setPosition({110.f,90.f});
     instruction.setPosition({130.f,500.f});
     }
 
 void ExplorationState::enter() {
     encounterClock.restart(); 
-    engine.getWindow().setTitle("Pokemon - Exploration | E: sauvage, T: dresseur");
+    engine.getWindow().setTitle("Pokemon - Exploration");
+    CombatButton = std::make_unique<Button>(sf::Vector2f(550.f,50.f),sf::Vector2f(200.f,50.f),"Combat in arena",font,[this]() {
+        engine.requestState(std::make_unique<CombatState>(engine,game));
+    });
+    MenuButton = std::make_unique<Button>(sf::Vector2f(550.f,120.f),sf::Vector2f(200.f,50.f),"Menu",font,[this]() {
+       engine.requestState(std::make_unique<MenuState>(engine,game));
+    });
 }
 
 void ExplorationState::exit() {
@@ -28,25 +37,17 @@ void ExplorationState::update() {
     while (const std::optional<sf::Event> event = window.pollEvent()) { 
         if (event->is<sf::Event::Closed>()) { 
             window.close();
-        } else if (const auto* key = event->getIf<sf::Event::KeyPressed>()) { 
-            if (key->code == sf::Keyboard::Key::E) {
-                engine.requestState(std::make_unique<EncounterState>(engine, game)); 
-            } else if (key->code == sf::Keyboard::Key::T) {
-                engine.requestState(std::make_unique<CombatState>(engine, game));
-            }
+        } 
+        CombatButton->handleEvent(*event, window);
+        MenuButton->handleEvent(*event, window);
         }
-    }
 
-    if (encounterClock.getElapsedTime().asSeconds() >= 10.0f) { 
-        static std::mt19937 generator(std::random_device{}());
-        std::bernoulli_distribution trainerEncounter(0.25); 
+    if (encounterClock.getElapsedTime().asSeconds() >= 5.0f) { 
         encounterClock.restart(); 
-        if (trainerEncounter(generator)) {
-            engine.requestState(std::make_unique<CombatState>(engine, game)); 
-        } else {
-            engine.requestState(std::make_unique<EncounterState>(engine, game)); 
-        }
+        engine.requestState(std::make_unique<EncounterState>(engine, game)); 
     }
     window.draw(title);
     window.draw(instruction);
+    CombatButton->draw(window);
+    MenuButton->draw(window);
 }

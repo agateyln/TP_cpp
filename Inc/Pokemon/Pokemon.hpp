@@ -22,10 +22,10 @@ class Pokemon {
 
         int getId() const;
         string getName() const;
-        double getHitPoint();
-        double getAttack();
-        double getDefense();
-        int getGeneration();
+        double getHitPoint() const;
+        double getAttack() const;
+        double getDefense() const;
+        int getGeneration() const;
         static int getCount();
 
         bool attackPokemon(Pokemon &target);

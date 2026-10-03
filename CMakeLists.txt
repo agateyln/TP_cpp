@@ -39,6 +39,7 @@ set(SOURCES
     Src/States/CombatState.cpp
     Src/States/GameOverState.cpp
     Src/States/CaptureState.cpp
+    Src/States/MenuState.cpp
 )
 
 # --- Executable ---
