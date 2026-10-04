@@ -34,6 +34,7 @@ void MenuState::enter() {
         game.getParty().healAllPokemon();
     });
     PartyButton = std::make_unique<Button>(sf::Vector2f(100.f,300.f),sf::Vector2f(200.f,50.f),"View Party",font, [this]() {
+        partyPage = 0;
         displayPartyPanel();
     });
     AttackListButton = std::make_unique<Button>(sf::Vector2f(100.f,400.f),sf::Vector2f(200.f,50.f),"View Attack list",font,[this]() {
@@ -49,19 +50,32 @@ void MenuState::clearPanel() {
     panelSprites.clear();
     panelLabels.clear();
     panelButtons.clear();
+    previousPartyButton.reset();
+    nextPartyButton.reset();
 }
 
 void MenuState::displayPartyPanel() {
     clearPanel();
     showPanel = true;
     panelTitle.setString("Your party");
-    panelTextures.reserve(game.getParty().size()); 
-    panelSprites.reserve(game.getParty().size());
-    panelLabels.reserve(game.getParty().size());
-    panelButtons.reserve(game.getParty().size());
+    const std::size_t partySize = game.getParty().size();
+    const std::size_t pageCount = (partySize + partyPageSize - 1) / partyPageSize;
+    if (pageCount == 0) {
+        partyPage = 0;
+    } else if (partyPage >= pageCount) {
+        partyPage = pageCount - 1;
+    }
 
-    for (std::size_t index = 0; index < game.getParty().size(); ++index) {
+    const std::size_t firstPokemon = partyPage * partyPageSize;
+    const std::size_t lastPokemon = std::min(firstPokemon + partyPageSize, partySize);
+    panelTextures.reserve(lastPokemon - firstPokemon);
+    panelSprites.reserve(lastPokemon - firstPokemon);
+    panelLabels.reserve(lastPokemon - firstPokemon);
+    panelButtons.reserve(lastPokemon - firstPokemon);
+
+    for (std::size_t index = firstPokemon; index < lastPokemon; ++index) {
         Pokemon pokemon = game.getParty().getByIndex(index);
+        const std::size_t row = index - firstPokemon;
         const std::string texturePath = "../Res/pokemon/" + std::to_string(pokemon.getId()) + ".png";
         auto texture = std::make_unique<sf::Texture>();
         if (!texture->loadFromFile(texturePath)) {
@@ -71,14 +85,14 @@ void MenuState::displayPartyPanel() {
         auto sprite = std::make_unique<sf::Sprite>(*texture);
         auto label = std::make_unique<sf::Text>(font, pokemon.getName() + "\n - HP: " + std::to_string(static_cast<int>(pokemon.getHitPoint())) + "\n - Atk: " + std::to_string(static_cast<int>(pokemon.getAttack())) + "\n - Def: " + std::to_string(static_cast<int>(pokemon.getDefense())), 14);
 
-        sprite->setPosition({445.f, 85.f + static_cast<float>(index) * 75.f});
-        label->setPosition({535.f, 110.f + static_cast<float>(index) * 75.f});
+        sprite->setPosition({445.f, 85.f + static_cast<float>(row) * 75.f});
+        label->setPosition({535.f, 110.f + static_cast<float>(row) * 75.f});
         panelTextures.push_back(std::move(texture));
         panelSprites.push_back(std::move(sprite));
         panelLabels.push_back(std::move(label));
 
         // button to add the Pokemon to the attack list, only if its hitPoint is greater than 0
-        auto button= std::make_unique<Button>(sf::Vector2f(700.f,120.f + static_cast<float>(index)*75.f),sf::Vector2f(60.f,30.f),"Add",font,[this,pokemon]() {
+        auto button= std::make_unique<Button>(sf::Vector2f(700.f,135.f + static_cast<float>(row)*75.f),sf::Vector2f(60.f,30.f),"Add",font,[this,pokemon]() {
             if (pokemon.getHitPoint() > 0) {
                 game.getAttackList().addPokemonToAttackFromParty(game.getParty(),pokemon);
                 refreshPartyPanel = true;
@@ -86,6 +100,29 @@ void MenuState::displayPartyPanel() {
         });
         panelButtons.push_back(std::move(button));
 
+    }
+
+    if (partyPage > 0) {
+        previousPartyButton = std::make_unique<Button>(
+            sf::Vector2f(445.f, 535.f),
+            sf::Vector2f(90.f, 30.f),
+            "<<",
+            font,
+            [this]() {
+                --partyPage;
+                refreshPartyPanel = true;
+            });
+    }
+    if (partyPage + 1 < pageCount) {
+        nextPartyButton = std::make_unique<Button>(
+            sf::Vector2f(650.f, 535.f),
+            sf::Vector2f(90.f, 30.f),
+            ">>",
+            font,
+            [this]() {
+                ++partyPage;
+                refreshPartyPanel = true;
+            });
     }
 
 }
@@ -116,7 +153,7 @@ void MenuState::displayAttackPanel() {
         panelLabels.push_back(std::move(label));
 
         // button to remove the Pokemon from the attack list to the party
-        auto button=std::make_unique<Button>(sf::Vector2f(660.f,120.f + static_cast<float>(index)*75.f),sf::Vector2f(100.f,30.f),"Remove",font,[this,pokemon]() {
+        auto button=std::make_unique<Button>(sf::Vector2f(660.f,135.f + static_cast<float>(index)*75.f),sf::Vector2f(100.f,30.f),"Remove",font,[this,pokemon]() {
             game.getAttackList().removePokemonFromAttackToParty(game.getParty(),pokemon);
             refreshAttackPanel=true;
         });
@@ -139,6 +176,12 @@ void MenuState::drawPanel(sf::RenderWindow& window) {
     for (const auto& button : panelButtons) {
         button->draw(window);
     }
+    if (previousPartyButton) {
+        previousPartyButton->draw(window);
+    }
+    if (nextPartyButton) {
+        nextPartyButton->draw(window);
+    }
 }
 
 void MenuState::exit() {
@@ -156,6 +199,12 @@ void MenuState::update() {
         ExplorationButton->handleEvent(*event, window);
         for (const auto& button : panelButtons) {
             button->handleEvent(*event, window);
+        }
+        if (previousPartyButton) {
+            previousPartyButton->handleEvent(*event, window);
+        }
+        if (nextPartyButton) {
+            nextPartyButton->handleEvent(*event, window);
         }
     }
     if (refreshPartyPanel) {

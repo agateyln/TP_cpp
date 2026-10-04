@@ -29,7 +29,7 @@ void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
             auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
             
             if (shape.getGlobalBounds().contains(mousePos)) {
-                callback();
+                callback(); 
             }
         }
     }

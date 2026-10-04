@@ -28,6 +28,10 @@ class MenuState : public StateInterface {
         std::vector<std::unique_ptr<sf::Sprite>> panelSprites;
         std::vector<std::unique_ptr<sf::Text>> panelLabels;
         std::vector<std::unique_ptr<Button>> panelButtons;
+        std::unique_ptr<Button> previousPartyButton;
+        std::unique_ptr<Button> nextPartyButton;
+        std::size_t partyPage = 0;
+        static constexpr std::size_t partyPageSize = 6;
         bool showPanel;
         bool refreshPartyPanel;
         bool refreshAttackPanel;
