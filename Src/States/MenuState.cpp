@@ -21,6 +21,8 @@ MenuState::MenuState(GameEngine& engine, Game& game):
     showPanel(false),
     refreshPartyPanel(false),
     refreshAttackPanel(false) {
+        const sf::Color skyTextColor(24, 48, 78);
+        title.setFillColor(skyTextColor);
         title.setPosition({10.f,90.f});
         panel.setPosition({420.f,20.f});
         panel.setSize({350.f,560.f});

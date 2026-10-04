@@ -18,6 +18,9 @@ EncounterState::EncounterState(GameEngine& engine, Game& game):
     sprite(texture),
     CombatButton(nullptr),
     FleeButton(nullptr) {
+    const sf::Color skyTextColor(24, 48, 78);
+    title.setFillColor(skyTextColor);
+    instruction.setFillColor(skyTextColor);
     title.setPosition({10.f,90.f});
     instruction.setPosition({10.f,430.f});
 }

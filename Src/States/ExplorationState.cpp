@@ -16,6 +16,9 @@ ExplorationState::ExplorationState(GameEngine& engine, Game& game):
     backgroundSprite(backgroundTexture),
     CombatButton(nullptr),
     MenuButton(nullptr){
+    const sf::Color skyTextColor(24, 48, 78);
+    title.setFillColor(skyTextColor);
+    instruction.setFillColor(skyTextColor);
     title.setPosition({110.f,90.f});
     instruction.setPosition({130.f,500.f});
     }

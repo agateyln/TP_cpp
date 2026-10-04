@@ -27,6 +27,9 @@ CaptureState::CaptureState(GameEngine& engine, Game& game, const Pokemon& wildPo
     panelTitle(font,"",24),
     showPanel(false),
     refreshAttackPanel(false) {
+    const sf::Color skyTextColor(24, 48, 78);
+    title.setFillColor(skyTextColor);
+    wildPokemonInfo.setFillColor(skyTextColor);
     title.setPosition({10.f,10.f});
         wildPokemonInfo.setPosition({500.f,370.f});
     combatMessagePanel.setPosition({20.f,55.f});
