@@ -62,6 +62,8 @@ void MenuState::displayPartyPanel() {
     clearPanel();
     showPanel = true;
     panelTitle.setString("Your party");
+
+    // calculate the number of pages based on the party size and page size
     const std::size_t partySize = game.getParty().size();
     const std::size_t pageCount = (partySize + partyPageSize - 1) / partyPageSize;
     if (pageCount == 0) {
@@ -70,6 +72,7 @@ void MenuState::displayPartyPanel() {
         partyPage = pageCount - 1;
     }
 
+    // calculate the range of Pokemon to display on the current page
     const std::size_t firstPokemon = partyPage * partyPageSize;
     const std::size_t lastPokemon = std::min(firstPokemon + partyPageSize, partySize);
     panelTextures.reserve(lastPokemon - firstPokemon);
@@ -77,6 +80,7 @@ void MenuState::displayPartyPanel() {
     panelLabels.reserve(lastPokemon - firstPokemon);
     panelButtons.reserve(lastPokemon - firstPokemon);
 
+    // display the pokemon for the current page
     for (std::size_t index = firstPokemon; index < lastPokemon; ++index) {
         Pokemon pokemon = game.getParty().getByIndex(index);
         const std::size_t row = index - firstPokemon;
@@ -139,6 +143,7 @@ void MenuState::displayAttackPanel() {
     panelSprites.reserve(game.getAttackList().size());
     panelLabels.reserve(game.getAttackList().size());
 
+    // display the pokemon in the attack list
     for (std::size_t index = 0; index < game.getAttackList().size(); ++index) {
         Pokemon pokemon = game.getAttackList().getByIndex(index);
         const std::string texturePath = "../Res/pokemon/" + std::to_string(pokemon.getId()) + ".png";

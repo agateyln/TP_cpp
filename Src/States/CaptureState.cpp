@@ -207,7 +207,7 @@ void CaptureState::update() {
     drawPanel(window);
 }
 
-void CaptureState::handleAttack() {
+void CaptureState::handleAttack() { // method to handle a round of combat between 2 pokemon
     if (attackerPokemon.has_value()) {
         addCombatMessage(attackerPokemon->getName() + " attacks " + wildPokemon.getName() + ".");
         if (attackerPokemon->attackPokemon(wildPokemon)) {

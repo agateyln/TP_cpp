@@ -1,6 +1,3 @@
-// to replace the pressing of keys with clickable buttons
-// the button class will have a rectangle shape, a text label, and a callback function that will be called when the button is clicked. 
-
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <functional> 

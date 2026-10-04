@@ -47,6 +47,7 @@ void ExplorationState::update() {
         MenuButton->handleEvent(*event, window);
         }
 
+    // check if 5 seconds have passed since the last encounter and trigger a wild Pokemon encounter
     if (encounterClock.getElapsedTime().asSeconds() >= 5.0f) { 
         encounterClock.restart(); 
         engine.requestState(std::make_unique<EncounterState>(engine, game)); 

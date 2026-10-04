@@ -41,6 +41,7 @@ void EncounterState::enter() {
         return;
     }
 
+    // generate a rando index to select a wild Pokemon from Pokedex
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0,static_cast<int>(pokedex.size())-1); 
