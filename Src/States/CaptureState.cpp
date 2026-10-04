@@ -31,7 +31,7 @@ CaptureState::CaptureState(GameEngine& engine, Game& game, const Pokemon& wildPo
     title.setFillColor(skyTextColor);
     wildPokemonInfo.setFillColor(skyTextColor);
     title.setPosition({10.f,10.f});
-        wildPokemonInfo.setPosition({500.f,370.f});
+    wildPokemonInfo.setPosition({500.f,370.f});
     combatMessagePanel.setPosition({20.f,55.f});
     combatMessagePanel.setSize({760.f,180.f});
     combatMessagePanel.setFillColor(sf::Color(36,48,72));
@@ -67,8 +67,6 @@ void CaptureState::enter() {
     }
 
     updateWildPokemonInfo();
-
-    engine.getWindow().setTitle("Pokemon - Capture battle");
 
     if (!attackerTexture.loadFromFile(
             "../Res/pokemon/" + std::to_string(attackerPokemon->getId()) + ".png")) {

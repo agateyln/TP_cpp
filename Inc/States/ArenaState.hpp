@@ -1,19 +1,24 @@
 #pragma once
 
 #include "StateInterface.hpp"
+#include "Game/Button.hpp"
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class GameEngine;
+class Game;
 
-class GameOverState : public StateInterface {
+class ArenaState : public StateInterface {
 private:
     GameEngine& engine;
+    Game& game;
     sf::Font font;
     sf::Text title;
-    sf::Text message;
+    std::unique_ptr<Button> explorationButton;
+    std::unique_ptr<Button> gameOverButton;
 
 public:
-    explicit GameOverState(GameEngine& engine);
+    ArenaState(GameEngine& engine, Game& game);
     void enter() override;
     void exit() override;
     void update() override;

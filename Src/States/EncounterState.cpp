@@ -26,7 +26,7 @@ EncounterState::EncounterState(GameEngine& engine, Game& game):
 }
 
 void EncounterState::enter() {
-    engine.getWindow().setTitle("Pokemon - Rencontre avec un Pokemon sauvage");
+    engine.getWindow().setTitle("Pokemon - Encounter");
     CombatButton = std::make_unique<Button>(sf::Vector2f(100.f, 500.f),sf::Vector2f(200.f, 50.f),"Combat",font,[this]() {
         if (wildPokemon.has_value()) {
             engine.requestState(std::make_unique<CaptureState>(engine, game, *wildPokemon));
@@ -46,12 +46,12 @@ void EncounterState::enter() {
     std::uniform_int_distribution<> dis(0,static_cast<int>(pokedex.size())-1); 
     int randomIndex=dis(gen);
         wildPokemon = pokedex.getByIndex(randomIndex);
-        title.setString("Wild Pokemon: " + wildPokemon->getName());
+        title.setString("Wild Pokemon: \n" + wildPokemon->getName());
     if (!texture.loadFromFile(
             "../Res/pokemon/" + std::to_string(wildPokemon->getId()) + ".png")) {
         return;
     }
-    sprite.setPosition({350.f,180.f});
+    sprite.setPosition({350.f,290.f});
 
 }
 

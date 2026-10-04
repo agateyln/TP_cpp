@@ -2,7 +2,12 @@
 #include "Game/GameEngine.hpp"
 
 GameOverState::GameOverState(GameEngine& engine)
-    : engine(engine) {
+        : engine(engine),
+            font("../Res/font.otf"),
+            title(font, "Game Over", 48),
+            message(font, "This path is too intimidating!", 24) {
+        title.setPosition({230.f, 180.f});
+        message.setPosition({180.f, 280.f});
 }
 
 void GameOverState::enter() {
@@ -19,4 +24,6 @@ void GameOverState::update() {
             window.close();
         }
     }
+    window.draw(title);
+    window.draw(message);
 }

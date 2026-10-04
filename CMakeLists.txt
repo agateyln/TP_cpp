@@ -53,7 +53,7 @@ set(SOURCES
     Src/States/WelcomeState.cpp
     Src/States/ExplorationState.cpp
     Src/States/EncounterState.cpp
-    Src/States/CombatState.cpp
+    Src/States/ArenaState.cpp
     Src/States/GameOverState.cpp
     Src/States/CaptureState.cpp
     Src/States/MenuState.cpp

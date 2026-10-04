@@ -23,7 +23,7 @@ MenuState::MenuState(GameEngine& engine, Game& game):
     refreshAttackPanel(false) {
         const sf::Color skyTextColor(24, 48, 78);
         title.setFillColor(skyTextColor);
-        title.setPosition({10.f,90.f});
+        title.setPosition({600.f,30.f});
         panel.setPosition({420.f,20.f});
         panel.setSize({350.f,560.f});
         panel.setFillColor(sf::Color(36,48,72));
@@ -34,7 +34,7 @@ MenuState::MenuState(GameEngine& engine, Game& game):
 
 void MenuState::enter() {
     engine.getWindow().setTitle("Pokemon - Menu");
-    HealButton = std::make_unique<Button>(sf::Vector2f(100.f,200.f),sf::Vector2f(200.f,50.f),"Heal Pokemon",font, [this]() {
+    HealButton = std::make_unique<Button>(sf::Vector2f(100.f,200.f),sf::Vector2f(200.f,50.f),"Heal Party",font, [this]() {
         game.getParty().healAllPokemon();
     });
     PartyButton = std::make_unique<Button>(sf::Vector2f(100.f,300.f),sf::Vector2f(200.f,50.f),"View Party",font, [this]() {
@@ -44,7 +44,7 @@ void MenuState::enter() {
     AttackListButton = std::make_unique<Button>(sf::Vector2f(100.f,400.f),sf::Vector2f(200.f,50.f),"View Attack list",font,[this]() {
         displayAttackPanel();
     }); 
-    ExplorationButton = std::make_unique<Button>(sf::Vector2f(20.f,20.f),sf::Vector2f(200.f,50.f),"Back",font,[this](){
+    ExplorationButton = std::make_unique<Button>(sf::Vector2f(20.f,20.f),sf::Vector2f(100.f,50.f),"Back",font,[this](){
         engine.requestState(std::make_unique<ExplorationState>(engine, game));
     });
 }

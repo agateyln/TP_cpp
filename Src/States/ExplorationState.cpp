@@ -2,7 +2,7 @@
 #include "Game/GameEngine.hpp"
 #include "Game/Game.hpp"
 #include "Game/Button.hpp"
-#include "States/CombatState.hpp"
+#include "States/ArenaState.hpp"
 #include "States/EncounterState.hpp"
 #include "States/MenuState.hpp"
 
@@ -10,24 +10,24 @@ ExplorationState::ExplorationState(GameEngine& engine, Game& game):
     engine(engine),
     game(game),
     font("../Res/font.otf"),
-    title(font,"Looking for Pokemon", 40),
-    instruction(font, "Press E for wild encounter, T for trainer encounter", 20),
+    title(font,"Looking for Pokemon", 38),
+    instruction(font,"(Wait for 5 seconds to encounter a wild Pokemon)",15),
     backgroundTexture("../Res/bg/exploration.png"),
     backgroundSprite(backgroundTexture),
     CombatButton(nullptr),
     MenuButton(nullptr){
     const sf::Color skyTextColor(24, 48, 78);
     title.setFillColor(skyTextColor);
+    title.setPosition({30.f,90.f});
     instruction.setFillColor(skyTextColor);
-    title.setPosition({110.f,90.f});
-    instruction.setPosition({130.f,500.f});
+    instruction.setPosition({40.f,200.f});
     }
 
 void ExplorationState::enter() {
     encounterClock.restart(); 
     engine.getWindow().setTitle("Pokemon - Exploration");
-    CombatButton = std::make_unique<Button>(sf::Vector2f(550.f,50.f),sf::Vector2f(200.f,50.f),"Combat in arena",font,[this]() {
-        engine.requestState(std::make_unique<CombatState>(engine,game));
+    CombatButton = std::make_unique<Button>(sf::Vector2f(550.f,50.f),sf::Vector2f(200.f,50.f),"Arena (death)",font,[this]() {
+        engine.requestState(std::make_unique<ArenaState>(engine,game));
     });
     MenuButton = std::make_unique<Button>(sf::Vector2f(550.f,120.f),sf::Vector2f(200.f,50.f),"Menu",font,[this]() {
        engine.requestState(std::make_unique<MenuState>(engine,game));
