@@ -12,6 +12,8 @@ ExplorationState::ExplorationState(GameEngine& engine, Game& game):
     font("../Res/font.otf"),
     title(font,"Looking for Pokemon", 40),
     instruction(font, "Press E for wild encounter, T for trainer encounter", 20),
+    backgroundTexture("../Res/bg/exploration.png"),
+    backgroundSprite(backgroundTexture),
     CombatButton(nullptr),
     MenuButton(nullptr){
     title.setPosition({110.f,90.f});
@@ -46,6 +48,7 @@ void ExplorationState::update() {
         encounterClock.restart(); 
         engine.requestState(std::make_unique<EncounterState>(engine, game)); 
     }
+    window.draw(backgroundSprite);
     window.draw(title);
     window.draw(instruction);
     CombatButton->draw(window);

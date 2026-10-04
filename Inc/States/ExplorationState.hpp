@@ -16,6 +16,8 @@ private:
         sf::Font font;
         sf::Text title;
         sf::Text instruction;
+        sf::Texture backgroundTexture;
+        sf::Sprite backgroundSprite;
         std::unique_ptr<Button> CombatButton;
         std::unique_ptr<Button> MenuButton;
 

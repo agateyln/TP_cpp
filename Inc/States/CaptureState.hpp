@@ -4,6 +4,8 @@
 #include "Pokemon/Pokemon.hpp"
 #include <SFML/Graphics.hpp>
 #include "Game/Button.hpp"
+#include <string>
+#include <vector>
 #include <optional>
 
 class GameEngine;
@@ -18,6 +20,12 @@ class CaptureState : public StateInterface {
         bool leavingState = false;
         sf::Font font;
         sf::Text title;
+        sf::Text wildPokemonInfo;
+        sf::Texture backgroundTexture;
+        sf::Sprite backgroundSprite;
+        sf::RectangleShape combatMessagePanel;
+        sf::Text combatMessageText;
+        std::vector<std::string> combatMessages;
         sf::Texture attackerTexture;
         sf::Texture wildPokemonTexture;
         sf::Sprite attackerSprite;
@@ -31,6 +39,8 @@ class CaptureState : public StateInterface {
         std::vector<std::unique_ptr<sf::Text>> attackListLabels;
         std::vector<std::unique_ptr<Button>> attackListButtons;
         void handleAttack();
+        void addCombatMessage(const std::string& message);
+        void updateWildPokemonInfo();
         void displayAttackList();
         void clearPanel();
         void drawPanel(sf::RenderWindow& window);

@@ -12,6 +12,11 @@ CaptureState::CaptureState(GameEngine& engine, Game& game, const Pokemon& wildPo
     wildPokemon(wildPokemon),
     font("../Res/font.otf"),
     title(font,"Battle to capture",40),
+        wildPokemonInfo(font,"",18),
+    backgroundTexture("../Res/bg/exploration.png"),
+    backgroundSprite(backgroundTexture),
+    combatMessagePanel(),
+    combatMessageText(font,"",16),
     attackerTexture("../Res/pokemon/1.png"),
     wildPokemonTexture("../Res/pokemon/1.png"),
     attackerSprite(attackerTexture),
@@ -22,26 +27,33 @@ CaptureState::CaptureState(GameEngine& engine, Game& game, const Pokemon& wildPo
     panelTitle(font,"",24),
     showPanel(false),
     refreshAttackPanel(false) {
-    title.setPosition({10.f,90.f});
-    panelTitle.setPosition({445.f,45.f});
+    title.setPosition({10.f,10.f});
+        wildPokemonInfo.setPosition({500.f,370.f});
+    combatMessagePanel.setPosition({20.f,55.f});
+    combatMessagePanel.setSize({760.f,180.f});
+    combatMessagePanel.setFillColor(sf::Color(36,48,72));
+    combatMessagePanel.setOutlineColor(sf::Color(120,140,180));
+    combatMessagePanel.setOutlineThickness(2.f);
+    combatMessageText.setPosition({35.f,70.f});
+    panelTitle.setPosition({35.f,60.f});
 }
 
 
 void CaptureState::enter() {
     engine.getWindow().setTitle("Pokemon - Capture battle");
-    AttackButton = std::make_unique<Button>(sf::Vector2f(100.f,500.f),sf::Vector2f(200.f,50.f),"Attack",font,[this](){
+    AttackButton = std::make_unique<Button>(sf::Vector2f(50.f,500.f),sf::Vector2f(200.f,50.f),"Attack",font,[this](){
         handleAttack();
     });
-    FleeButton = std::make_unique<Button>(sf::Vector2f(350.f,500.f),sf::Vector2f(200.f,50.f),"Flee",font,[this]() {
+    FleeButton = std::make_unique<Button>(sf::Vector2f(300.f,500.f),sf::Vector2f(200.f,50.f),"Flee",font,[this]() {
         engine.requestState(std::make_unique<ExplorationState>(engine,game));
         leavingState = true;
     });
-    AttackListButton = std::make_unique<Button>(sf::Vector2f(600.f,500.f),sf::Vector2f(200.f,50.f),"Attack list",font,[this]() {
+    AttackListButton = std::make_unique<Button>(sf::Vector2f(550.f,500.f),sf::Vector2f(200.f,50.f),"Attack list",font,[this]() {
         displayAttackList();
     });
 
     if (game.getAttackList().empty()) {
-        std::cout<<"You have no Pokemon in your attack list."<<std::endl;
+        addCombatMessage("You have no Pokemon in your attack list.");
         engine.requestState(std::make_unique<ExplorationState>(engine, game));
         leavingState = true;
         return;
@@ -51,6 +63,8 @@ void CaptureState::enter() {
         attackerPokemon = game.getAttackList().getByIndex(0);
     }
 
+    updateWildPokemonInfo();
+
     engine.getWindow().setTitle("Pokemon - Capture battle");
 
     if (!attackerTexture.loadFromFile(
@@ -58,14 +72,16 @@ void CaptureState::enter() {
         std::cerr << "Error: Unable to load the attacker's image." << std::endl;
     }
     attackerSprite.setTexture(attackerTexture);
+    attackerSprite.setOrigin({static_cast<float>(attackerTexture.getSize().x), 0.f});
+    attackerSprite.setScale({-1.f, 1.f});
     
     if (!wildPokemonTexture.loadFromFile(
             "../Res/pokemon/" + std::to_string(wildPokemon.getId()) + ".png")) {
         std::cerr << "Error: Unable to load the wild Pokemon's image." << std::endl;
     }
     wildPokemonSprite.setTexture(wildPokemonTexture);
-    attackerSprite.setPosition({100.f,180.f});
-    wildPokemonSprite.setPosition({350.f,180.f});
+    attackerSprite.setPosition({160.f,330.f});
+    wildPokemonSprite.setPosition({350.f,330.f});
 
 }
 
@@ -81,6 +97,8 @@ void CaptureState::displayAttackList() {
     showPanel = true;
     refreshAttackPanel = false;
     panelTitle.setString("Attack list");
+    panelTitle.setCharacterSize(18);
+    panelTitle.setPosition({35.f,60.f});
     attackListTextures.reserve(game.getAttackList().size());
     attackListSprites.reserve(game.getAttackList().size());
     attackListLabels.reserve(game.getAttackList().size());
@@ -99,23 +117,30 @@ void CaptureState::displayAttackList() {
             continue;
         }
         auto sprite = std::make_unique<sf::Sprite>(*texture);
-        auto label = std::make_unique<sf::Text>(font,pokemon.getName()+"\n - HP: "+std::to_string(static_cast<int>(pokemon.getHitPoint()))+"\n - Atk: "+std::to_string(static_cast<int>(pokemon.getAttack()))+"\n - Def: "+std::to_string(static_cast<int>(pokemon.getDefense())),14);
+        auto label = std::make_unique<sf::Text>(
+            font,
+            pokemon.getName() + "\nHP: " + std::to_string(static_cast<int>(pokemon.getHitPoint()))
+                + "\nAtk: " + std::to_string(static_cast<int>(pokemon.getAttack()))
+                + "\nDef: " + std::to_string(static_cast<int>(pokemon.getDefense())),
+            10);
 
-        sprite->setPosition({445.f,85.f + static_cast<float>(index)*75.f});
-        label->setPosition({535.f,110.f + static_cast<float>(index)*75.f});
+        const float columnX = 25.f + static_cast<float>(index) * 125.f;
+        sprite->setScale({0.5f,0.5f});
+        sprite->setPosition({columnX,85.f});
+        label->setPosition({columnX,135.f});
         attackListTextures.push_back(std::move(texture));
         attackListSprites.push_back(std::move(sprite));
         attackListLabels.push_back(std::move(label));
 
         // button to choose the Pokemon as the attacker
-        auto button=std::make_unique<Button>(sf::Vector2f(700.f,120.f + static_cast<float>(index)*75.f),sf::Vector2f(60.f,30.f),"Choose",font,[this,pokemon]() {
+        auto button=std::make_unique<Button>(sf::Vector2f(columnX,200.f),sf::Vector2f(90.f,25.f),"Choose",font,[this,pokemon]() {
             attackerPokemon = pokemon;
             if (!attackerTexture.loadFromFile( 
                     "../Res/pokemon/" + std::to_string(attackerPokemon->getId()) + ".png")) {
                 std::cerr << "Error: Unable to load the attacker's image." << std::endl;
             }
             attackerSprite.setTexture(attackerTexture);
-            std::cout<<"You chose "<<attackerPokemon->getName()<<" as your attacker."<<std::endl;
+            addCombatMessage("You chose " + attackerPokemon->getName() + " as your attacker.");
             refreshAttackPanel = true;
             showPanel = false;
         });
@@ -128,6 +153,7 @@ void CaptureState::drawPanel(sf::RenderWindow& window) {
     if (!showPanel) {
         return;
     }
+    window.draw(combatMessagePanel);
     window.draw(panelTitle);
     for (const auto& sprite : attackListSprites) {
         window.draw(*sprite);
@@ -161,12 +187,18 @@ void CaptureState::update() {
         displayAttackList();
     }
 
+    window.draw(backgroundSprite);
     if (!leavingState) {
         window.draw(title);
         window.draw(attackerSprite);
         window.draw(wildPokemonSprite);
+        window.draw(wildPokemonInfo);
     }
-    
+
+    if (!showPanel) {
+        window.draw(combatMessagePanel);
+        window.draw(combatMessageText);
+    }
     window.draw(title);
     AttackButton->draw(window);
     FleeButton->draw(window);
@@ -176,31 +208,25 @@ void CaptureState::update() {
 
 void CaptureState::handleAttack() {
     if (attackerPokemon.has_value()) {
-        std::cout<<"Attacker: "<<attackerPokemon->getName()<<" | Attack: "<<attackerPokemon->getAttack()<<" | Defense: "<<attackerPokemon->getDefense()<<" | HP: "<<attackerPokemon->getHitPoint()<<std::endl;
-        std::cout<<"Wild Pokemon: "<<wildPokemon.getName()<<" | Attack: "<<wildPokemon.getAttack()<<" | Defense: "<<wildPokemon.getDefense()<<" | HP: "<<wildPokemon.getHitPoint()<<"\n"<<std::endl;
-
-        std::cout << attackerPokemon->getName()<< " attacks " << wildPokemon.getName() << std::endl;
+        addCombatMessage(attackerPokemon->getName() + " attacks " + wildPokemon.getName() + ".");
         if (attackerPokemon->attackPokemon(wildPokemon)) {
             if (attackerPokemon->getAttack()-wildPokemon.getDefense()>0) {
                 wildPokemon.damagePokemon(attackerPokemon->getAttack() - wildPokemon.getDefense());
-                std::cout<<attackerPokemon->getName()<<" deals "<<attackerPokemon->getAttack()-wildPokemon.getDefense()<<" damage to "<<wildPokemon.getName()<<std::endl;
-                std::cout<<wildPokemon.getName()<<" has "<<wildPokemon.getHitPoint()<<" HP left."<<std::endl;
+                addCombatMessage(attackerPokemon->getName() + " deals " + std::to_string(static_cast<int>(attackerPokemon->getAttack()-wildPokemon.getDefense())) + " damage.");
+                addCombatMessage(wildPokemon.getName() + ": " + std::to_string(static_cast<int>(wildPokemon.getHitPoint())) + " HP left. " + attackerPokemon->getName() + ": " + std::to_string(static_cast<int>(attackerPokemon->getHitPoint())) + " HP left.");
             } else if (attackerPokemon->getAttack()-wildPokemon.getDefense()<=0) {
-                std::cout<<attackerPokemon->getName()<<" deals no damage to "<<wildPokemon.getName()<<"\n"<<std::endl;
+                addCombatMessage(attackerPokemon->getName() + " deals no damage.");
             }
         }
 
         if (!wildPokemon.isSleeping() && wildPokemon.attackPokemon(*attackerPokemon)) {
-            std::cout<<"Attacker: "<<attackerPokemon->getName()<<" | Attack: "<<attackerPokemon->getAttack()<<" | Defense: "<<attackerPokemon->getDefense()<<" | HP: "<<attackerPokemon->getHitPoint()<<std::endl;
-            std::cout<<"Wild Pokemon: "<<wildPokemon.getName()<<" | Attack: "<<wildPokemon.getAttack()<<" | Defense: "<<wildPokemon.getDefense()<<" | HP: "<<wildPokemon.getHitPoint()<<"\n"<<std::endl;
-                
-            std::cout<<wildPokemon.getName()<<" attacks "<<attackerPokemon->getName()<<std::endl;
+            addCombatMessage(wildPokemon.getName() + " attacks " + attackerPokemon->getName() + ".");
             if (wildPokemon.getAttack()-attackerPokemon->getDefense()>0) {
                 attackerPokemon->damagePokemon(wildPokemon.getAttack() - attackerPokemon->getDefense());
-                std::cout<<wildPokemon.getName()<<" deals "<<wildPokemon.getAttack()-attackerPokemon->getDefense()<<" damage to "<<attackerPokemon->getName()<<std::endl;
-                std::cout<<attackerPokemon->getName()<<" has "<<attackerPokemon->getHitPoint()<<" HP left."<<std::endl;
+                addCombatMessage(wildPokemon.getName() + " deals " + std::to_string(static_cast<int>(wildPokemon.getAttack()-attackerPokemon->getDefense())) + " damage.");
+                addCombatMessage(attackerPokemon->getName() + ": " + std::to_string(static_cast<int>(attackerPokemon->getHitPoint())) + " HP left. " + wildPokemon.getName() + ": " + std::to_string(static_cast<int>(wildPokemon.getHitPoint())) + " HP left.");
             } else if (wildPokemon.getAttack()-attackerPokemon->getDefense()<=0) {
-                std::cout<<wildPokemon.getName()<<" deals no damage to "<<attackerPokemon->getName()<<"\n"<<std::endl;
+                addCombatMessage(wildPokemon.getName() + " deals no damage.");
             }
         }
 
@@ -208,31 +234,46 @@ void CaptureState::handleAttack() {
 
         if (wildPokemon.isSleeping() || attackerPokemon->isSleeping()) {
             if (wildPokemon.isSleeping()) { 
-                std::cout<<wildPokemon.getName()<<" has been captured!"<<std::endl;
+                addCombatMessage(wildPokemon.getName() + " has been captured!");
                 game.getParty().addPokemonToParty(wildPokemon);
-                std::cout<<"Your party: "<<std::endl;
-                game.getParty().displayListPokemon(static_cast<int>(game.getParty().size()));
-                std::cout<<"Your attack list: "<<std::endl;
-                game.getAttackList().displayListPokemon(static_cast<int>(game.getAttackList().size()));                        
                 engine.requestState(std::make_unique<ExplorationState>(engine, game));
                 leavingState = true;
             } else if (attackerPokemon->isSleeping()) {
-                std::cout<<attackerPokemon->getName()<<" has fallen asleep and goes back to the party with their friends (or not)."<<std::endl;                    
+                addCombatMessage(attackerPokemon->getName() + " has fallen asleep and returns to the party.");
                 game.getAttackList().removePokemonFromAttackToParty(game.getParty(),*attackerPokemon); 
-                std::cout<<"Your party: "<<std::endl;
-                game.getParty().displayListPokemon(static_cast<int>(game.getParty().size()));
-                std::cout<<"Your attack list: "<<std::endl;
-                game.getAttackList().displayListPokemon(static_cast<int>(game.getAttackList().size()));
                 attackerPokemon.reset();
             }
 
             if (game.getAttackList().empty()) {
-                std::cout<<"All your Pokemon are sleeping. You have no more Pokemon to fight with. Heal them at the hospital."<<std::endl;
+                addCombatMessage("All your Pokemon are sleeping. Heal them at the hospital.");
                 engine.requestState(std::make_unique<ExplorationState>(engine, game));
                 leavingState = true;
             } else if (!game.getAttackList().empty() && !attackerPokemon.has_value()) { 
-                std::cout<<"You still have Pokemon to fight with. Choose another attacker by pressing A or flee by pressing F."<<std::endl;
+                addCombatMessage("Choose another attacker or flee.");
             }
         }
+        updateWildPokemonInfo();
     }
+}
+
+void CaptureState::updateWildPokemonInfo() {
+    wildPokemonInfo.setString(
+        wildPokemon.getName() + "\n"
+        "- HP: " + std::to_string(static_cast<int>(wildPokemon.getHitPoint())) + "\n"
+        "- Attack: " + std::to_string(static_cast<int>(wildPokemon.getAttack())) + "\n"
+        "- Defense: " + std::to_string(static_cast<int>(wildPokemon.getDefense())));
+}
+
+void CaptureState::addCombatMessage(const std::string& message) {
+    constexpr std::size_t maxMessages = 7;
+    combatMessages.push_back(message);
+    if (combatMessages.size() > maxMessages) {
+        combatMessages.erase(combatMessages.begin());
+    }
+
+    std::string text;
+    for (const std::string& combatMessage : combatMessages) {
+        text += combatMessage + "\n";
+    }
+    combatMessageText.setString(text);
 }

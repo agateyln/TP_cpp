@@ -17,6 +17,8 @@ class EncounterState : public StateInterface {
         sf::Font font;
         sf::Text title;
         sf::Text instruction;
+        sf::Texture backgroundTexture;
+        sf::Sprite backgroundSprite;
         sf::Texture texture;
         sf::Sprite sprite;
         std::unique_ptr<Button> CombatButton;

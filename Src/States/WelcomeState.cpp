@@ -10,8 +10,10 @@ WelcomeState::WelcomeState(GameEngine& engine, Game& game):
     game(game),
     font("../Res/font.otf"),
     title(font, "Pokemon pour les nuls", 40),
-    instruction(font, "Appuyez sur le bouton", 24),
-    message(font,"On vous donne deux Pokemon pour commencer",24),
+    instruction(font, "(Appuyez sur le bouton START)", 24),
+    message(font,"3 Pokemons pour commencer \n (dont Patachiot mon favori)",22),
+    backgroundTexture("../Res/bg/welcome.png"),
+    backgroundSprite(backgroundTexture),
     texture1("../Res/pokemon/2.png"),
     texture2("../Res/pokemon/40.png"),
     patachiotTexture("../Res/pokemon/926.png"),
@@ -19,15 +21,20 @@ WelcomeState::WelcomeState(GameEngine& engine, Game& game):
     starter2(texture2),
     patachiot(patachiotTexture),
     button(nullptr) {
+    const sf::Color skyTextColor(24, 48, 78);
+    title.setFillColor(skyTextColor);
+    message.setFillColor(skyTextColor);
+    instruction.setFillColor(skyTextColor);
     title.setPosition({110.f, 90.f});
-    instruction.setPosition({130.f, 500.f});
-    starter1.setPosition({100.f, 180.f});
-    starter2.setPosition({350.f, 180.f});
-    patachiot.setPosition({225.f, 300.f});
+    message.setPosition({180.f, 145.f});
+    instruction.setPosition({130.f, 550.f});
+    starter1.setPosition({100.f, 340.f});
+    starter2.setPosition({350.f, 340.f});
+    patachiot.setPosition({600.f, 340.f});
     }
 
 void WelcomeState::enter() {
-    engine.getWindow().setTitle("Pokemon - Accueil | Appuyez sur Entree");
+    engine.getWindow().setTitle("Pokemon - Welcome");
     // Add the two starter Pokemon to the player's party
     Pokemon starter = game.getPokedex().getById(2);
     Pokemon starter2 = game.getPokedex().getById(40);
@@ -41,13 +48,12 @@ void WelcomeState::enter() {
 
     // create the button to start the game
     
-    button = std::make_unique<Button>(sf::Vector2f(300.f,400.f), sf::Vector2f(200.f,50.f),"Start Game", font, [this]() {
+    button = std::make_unique<Button>(sf::Vector2f(300.f,480.f), sf::Vector2f(200.f,50.f),"Start", font, [this]() {
         engine.requestState(std::make_unique<ExplorationState>(engine, game));
     });
 }
 
 void WelcomeState::exit() {
-    std::cout << "Sortie de l'ecran d'accueil." << std::endl;
 }
 
 
@@ -61,6 +67,7 @@ void WelcomeState::update() {
     }
     
 
+    window.draw(backgroundSprite);
     window.draw(title);
     window.draw(instruction);
     window.draw(message);

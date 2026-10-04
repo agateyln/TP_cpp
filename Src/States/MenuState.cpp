@@ -11,6 +11,8 @@ MenuState::MenuState(GameEngine& engine, Game& game):
     game(game),
     font("../Res/font.otf"),
     title(font,"Menu",40),
+    backgroundTexture("../Res/bg/welcome.png"),
+    backgroundSprite(backgroundTexture),
     HealButton(nullptr),
     PartyButton(nullptr),
     AttackListButton(nullptr),
@@ -215,6 +217,7 @@ void MenuState::update() {
         refreshAttackPanel = false;
         displayAttackPanel();
     }
+    window.draw(backgroundSprite);
     window.draw(title);
     HealButton->draw(window);
     PartyButton->draw(window);

@@ -12,6 +12,8 @@ EncounterState::EncounterState(GameEngine& engine, Game& game):
     font("../Res/font.otf"),
     title(font, "Wild Pokemon Encounter!",40),
     instruction(font,"Choose an action",20),
+    backgroundTexture("../Res/bg/exploration.png"),
+    backgroundSprite(backgroundTexture),
     texture("../Res/pokemon/1.png"),
     sprite(texture),
     CombatButton(nullptr),
@@ -64,6 +66,7 @@ void EncounterState::update() {
         FleeButton->handleEvent(*event, window);
     }
 
+    window.draw(backgroundSprite);
     window.draw(title);
     window.draw(instruction);
     window.draw(sprite);

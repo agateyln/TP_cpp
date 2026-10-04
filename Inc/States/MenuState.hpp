@@ -18,6 +18,8 @@ class MenuState : public StateInterface {
         Game& game;
         sf::Font font;
         sf::Text title;
+        sf::Texture backgroundTexture;
+        sf::Sprite backgroundSprite;
         std::unique_ptr<Button> HealButton;
         std::unique_ptr<Button> PartyButton;
         std::unique_ptr<Button> AttackListButton;

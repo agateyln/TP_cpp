@@ -16,6 +16,8 @@ private:
     sf::Text title;
     sf::Text instruction;
     sf::Text message;
+    sf::Texture backgroundTexture;
+    sf::Sprite backgroundSprite;
     sf::Texture texture1;
     sf::Texture texture2;
     sf::Texture patachiotTexture;
