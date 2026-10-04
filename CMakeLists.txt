@@ -20,7 +20,24 @@ endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-find_package(SFML 3 COMPONENTS Graphics Audio Window System REQUIRED)
+find_package(SFML 3 CONFIG QUIET COMPONENTS Graphics Audio Window System)
+
+if(NOT SFML_FOUND)
+    include(FetchContent)
+
+    message(STATUS "SFML 3 not found locally; fetching SFML 3.0.2 from GitHub")
+    FetchContent_Declare(
+        SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 3.0.2
+        GIT_SHALLOW TRUE
+    )
+
+    set(SFML_BUILD_EXAMPLES OFF CACHE BOOL "Disable SFML examples" FORCE)
+    set(SFML_BUILD_TEST_SUITE OFF CACHE BOOL "Disable SFML tests" FORCE)
+    set(SFML_BUILD_DOC OFF CACHE BOOL "Disable SFML documentation" FORCE)
+    FetchContent_MakeAvailable(SFML)
+endif()
 
 # --- Fichiers sources ---
 set(SOURCES
@@ -55,4 +72,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # --- Dossier des headers ---
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Inc
+)
+
+# Keep runtime resources beside the build tree so the executable can be
+# launched from build/ without depending on the source tree layout.
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/Res
+        ${CMAKE_BINARY_DIR}/Res
 )

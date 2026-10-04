@@ -45,28 +45,13 @@ Pour l'instant, ce projet est constitué de 5 classes.
 
 ### Si SFML 3 n'est pas installée
 
-SFML n'est pas encore utilisée par le code actuel. Pour compiler le projet sans l'installer, commenter temporairement les deux blocs SFML dans `CMakeLists.txt`.
-
-```cmake
-# find_package(SFML 3 COMPONENTS Graphics Audio Window System REQUIRED)
-```
-
-Et : 
-
-```cmake
-# target_link_libraries(${PROJECT_NAME} PRIVATE
-#     SFML::Graphics
-#     SFML::Audio
-#     SFML::Window
-#     SFML::System
-# )
-```
+Lors de la configuration, CMake cherche d'abord une installation locale. Si SFML 3 n'est pas trouvée, CMake la télécharge automatiquement depuis GitHub. Une connexion Internet est donc nécessaire lors de la première configuration.
 
 Ensuite, reconfigurer et compiler :
 
 ```bash
 cmake -S . -B build
-cmake --build build --target Pokemon
+cmake --build build --target Pokemon --parallel
 ```
 
 
@@ -78,7 +63,7 @@ Les commandes doivent être exécutées depuis la racine du projet.
 
 ```bash
 cmake -S . -B build
-cmake --build build --target Pokemon
+cmake --build build --target Pokemon --parallel
 cd build
 ./Pokemon
 ```
@@ -87,7 +72,9 @@ cd build
 
 ```powershell
 cmake -S . -B build
-cmake --build build --config Debug --target Pokemon
+cmake --build build --config Debug --target Pokemon --parallel
 cd build
 .\Debug\Pokemon.exe
 ```
+
+Le dossier `Res` est automatiquement copié dans `build/Res` après la compilation. Il faut lancer l'exécutable depuis `build/` (ou depuis `build/Debug/` avec Visual Studio).
